@@ -7,7 +7,7 @@ SKIP: {
 		or skip "cannot open a filehandle to string.", 1;
 
 	my $h = Spreadsheet::Wright->new(filehandle => $handle, format => 'csv',
-									 csv_options=>{eol=>"\n"});
+		csv_options=>{eol=>"\n"});
 	$h->addrow('Name', 'Discovery');
 	$h->addrows(
 		['Archimedes', 'Water displacement'],

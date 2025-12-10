@@ -100,7 +100,38 @@ sub _add_prepared_row
 	foreach my $cell (@_)
 	{
 		my $tcell = $tr->addNewChild(TABLE_NS, 'table-cell');
-		$tcell->setAttributeNS(OFFICE_NS, 'value-type', 'string');
+		if (defined $cell->{type}) {
+			my $type = $cell->{type};
+			if ($type eq 'date') {
+				my $value = ( $cell->{content} =~ m|^(\d\d)/(\d\d)/(\d\d\d\d)$| ) ? "$3-$2-$1" : ($cell->{content} =~ /^\d\d\d\d-\d\d-\d\d$/) ?$ &:carp "invalid date value";
+				$tcell->setAttributeNS(OFFICE_NS, 'value-type',$type);
+				$tcell->setAttributeNS(OFFICE_NS, 'date-value',$value);
+			}
+			elsif ($type eq 'float') {
+				...
+			}
+			elsif ($type eq 'percentage'){
+				...
+			}
+			elsif ($type eq 'currency'){
+				...
+			}
+			elsif ($type eq 'time' ) {
+				...
+			}
+			elsif ($type eq 'boolean') {
+				...
+			}
+			elsif ($type eq 'string'){
+				$tcell->setAttributeNS(OFFICE_NS, 'value-type', $type )
+			}
+			else {
+				carp "Unknown cell type $type"
+			}
+		}
+		else {
+			$tcell->setAttributeNS(OFFICE_NS,'value-type','string')
+		}
 		
 		my $td = $tcell->addNewChild(TEXT_NS, 'p');
 		
